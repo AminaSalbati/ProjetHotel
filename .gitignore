@@ -1,4 +1,8 @@
 DTO/__pycache__/
-modele/__pycache__/
+metier/__pycache__/
 test/__pycache__/
-metier/__pycache__/chambreMetier.cpython-313.pyc
+modele/__pycache__/
+DTO/usagerDTO_BACKUP_668.py
+DTO/usagerDTO_BASE_668.py
+DTO/usagerDTO_LOCAL_668.py
+DTO/usagerDTO_REMOTE_668.py
