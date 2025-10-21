@@ -71,3 +71,5 @@ def modifierChambre(chambre:ChambreDTO):
  
         session.commit()   
         return ChambreDTO(chambreAModifier)
+
+        
