@@ -47,7 +47,7 @@ def supprimerTypeChambre(nom_type):
         if type_chambre:
             session.delete(type_chambre)
             session.commit()   
-
+            
 def getChambreParNumero(no_chambre: int):
      with Session(engine) as session:
         stmt = select(Chambre).where(Chambre.numero_chambre == no_chambre)
@@ -63,7 +63,6 @@ def modifierChambre(chambre:ChambreDTO):
         #TODO: valider que la chambre existe bie dans la db
         if chambreAModifier is None:
             raise ValueError(f"La chambre avec l'ID {chambre.idChambre} n'existe pas.")
-        
         chambreAModifier.disponible_reservation = chambre.disponible_reservation
         chambreAModifier.autre_informations = chambre.autre_informations
         chambreAModifier.numero_chambre = chambre.numero_chambre
@@ -71,12 +70,11 @@ def modifierChambre(chambre:ChambreDTO):
         if chambre.type_chambre is not None:
             stmt_type = select(TypeChambre).where(TypeChambre.nom_type == chambre.type_chambre.nom_type)
             type_chambre_existant = session.execute(stmt_type).scalars().one_or_none()
-
+ 
             if type_chambre_existant:
                 chambreAModifier.type_chambre = type_chambre_existant
             else:
                 raise ValueError(f"Le type de chambre '{chambre.type_chambre.nom_type}' n'existe pas dans la base.")
-
-
+ 
         session.commit()   
-        return ChambreDTO(chambreAModifier)     
+        return ChambreDTO(chambreAModifier)

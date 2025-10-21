@@ -4,8 +4,8 @@ from uuid import UUID
 from datetime import datetime
 from modele.usager import Usager
 import re
-
-
+ 
+ 
 class UsagerDTO(BaseModel):
     idUsager: Optional[UUID]
     prenom: str 
@@ -25,7 +25,6 @@ class UsagerDTO(BaseModel):
             if not re.fullmatch(r"[\d\s\+\-]+", self.mobile):
                 raise ValueError("Le numéro de mobile contient des caractères invalides")
         return self
-
     def __init__(self, usager: Usager):
         super().__init__(
             idUsager=usager.id_usager,
@@ -43,7 +42,6 @@ class CriteresRechercheDTO(BaseModel):
     motdePasse: Optional[str] = Field(None, min_length=8, max_length=60)
     adresse: Optional[str] = Field(None, min_length=5, max_length=255)
     mobile: Optional[str] = Field(None, min_length=10, max_length=20)
-
     @model_validator(mode='after')
     def check_nom_prenom_presence(self):
         if (self.nom is not None and self.prenom is None) or \
