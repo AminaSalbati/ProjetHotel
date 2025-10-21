@@ -1,7 +1,6 @@
 import unittest
 from modele.chambre import Chambre, TypeChambre
 from metier.chambreMetier import creerChambre, ChambreDTO
- 
 class TestCreerChambre(unittest.TestCase):
     def test_creerChambre(self):
         chambreDTO = ChambreDTO(
