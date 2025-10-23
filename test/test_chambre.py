@@ -2,12 +2,11 @@ import unittest
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, select
 from modele.chambre import Chambre , TypeChambre
-from DTO.chambreDTO import ChambreDTO
-from metier.chambreMetier import modifierChambre
-import logging
+from DTO.chambreDTO import ChambreDTO, TypeChambreDTO
+from metier.chambreMetier import modifierChambre, creerChambre, creerTypeChambre, getChambreParNumero, supprimerChambre, rechercherTypeChambreParNom, modifierTypeChambre
 
-logging.basicConfig()
-logging.getLogger("sqlachemy.engine").setLevel(logging.INFO)
+
+
 
 engine = create_engine('mssql+pyodbc://localhost\\SQLEXPRESS/Hotel?driver=ODBC+Driver+17+for+SQL+Server', use_setinputsizes=False)
 class test_chambre(unittest.TestCase):
@@ -42,3 +41,7 @@ class test_chambre(unittest.TestCase):
             chambreDB.autre_informations = "ancienne info"
             chambreDB.disponible_reservation = False
             session.commit()
+
+           
+    
+    

@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, select
+from sqlalchemy import create_engine, select, func
 from DTO.chambreDTO import ChambreDTO, TypeChambreDTO
 from modele.chambre import Chambre, TypeChambre
+from modele.reservation import Reservation
 
 engine = create_engine('mssql+pyodbc://localhost\\SQLEXPRESS/Hotel?driver=ODBC+Driver+17+for+SQL+Server', use_setinputsizes=False)
 
@@ -47,6 +48,8 @@ def supprimerTypeChambre(nom_type):
         if type_chambre:
             session.delete(type_chambre)
             session.commit()   
+
+#supprimer chambre; modifier type chambre; rechercher type chambre
             
 def getChambreParNumero(no_chambre: int):
      with Session(engine) as session:
@@ -76,3 +79,79 @@ def modifierChambre(chambre:ChambreDTO):
 
         session.commit()
         return ChambreDTO(chambreAModifier)
+    
+
+
+def supprimerChambre(numero_chambre: int) -> bool:
+    
+    with Session(engine) as session:
+        chambre = session.scalars(
+            select(Chambre).where(Chambre.numero_chambre == numero_chambre)
+        ).first()
+ 
+        if not chambre:
+            raise ValueError(f"Aucune chambre trouvée avec le numéro {numero_chambre}.")
+ 
+        
+        nb_res = session.scalar(
+            select(func.count(Reservation.id_reservation)).where(
+                Reservation.fk_id_chambre == chambre.id_chambre
+            )
+        )
+        if nb_res and nb_res > 0:
+            raise ValueError(
+                "Impossible de supprimer cette chambre : elle est associée à une ou plusieurs réservations."
+            )
+ 
+        session.delete(chambre)
+        session.commit()
+        return True
+        
+
+def modifierTypeChambre(typeChambre: TypeChambreDTO) -> TypeChambreDTO:
+    
+    with Session(engine) as session:
+        existing = session.scalars(
+            select(TypeChambre).where(TypeChambre.nom_type == typeChambre.nom_type)
+        ).first()
+ 
+        if not existing:
+            raise ValueError(f"Le type de chambre '{typeChambre.nom_type}' n'existe pas.")
+ 
+        if typeChambre.prix_plancher is not None and typeChambre.prix_plafond is not None:
+            if typeChambre.prix_plancher > typeChambre.prix_plafond:
+                raise ValueError("Le prix plancher doit être inférieur ou égal au prix plafond.")
+ 
+        existing.description_chambre = typeChambre.description_chambre
+        existing.prix_plancher = typeChambre.prix_plancher
+        existing.prix_plafond = typeChambre.prix_plafond
+ 
+        session.commit()
+        session.refresh(existing)
+ 
+        return TypeChambreDTO(
+            nom_type=existing.nom_type,
+            description_chambre=existing.description_chambre,
+            prix_plancher=existing.prix_plancher,
+            prix_plafond=existing.prix_plafond
+        )
+    
+
+
+def rechercherTypeChambreParNom(nom_type: str) -> TypeChambreDTO | None:
+    with Session(engine) as session:
+        result = session.scalars(
+            select(TypeChambre).where(TypeChambre.nom_type == nom_type)
+        ).first()
+ 
+        if not result:
+            return None
+
+        return TypeChambreDTO(
+            nom_type=result.nom_type,
+            description_chambre=result.description_chambre,
+            prix_plancher=result.prix_plancher,
+            prix_plafond=result.prix_plafond
+        )
+
+
