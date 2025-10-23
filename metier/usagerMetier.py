@@ -51,7 +51,7 @@ def supprimerUsager(id_usager: int):
  
 def modifierUsager(usagerDTO: UsagerDTO):
     with Session(engine) as session:
-        usager = session.query(Usager).filter_by(id_usager=usagerDTO.idUsager).first()
+        usager = session.query(Usager).filter_by(id_usager=usagerDTO.id_usager).first()
  
         if not usager:
             raise ValueError("Usager introuvable")

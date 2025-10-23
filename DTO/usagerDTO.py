@@ -7,7 +7,7 @@ import re
  
  
 class UsagerDTO(BaseModel):
-    idUsager: Optional[UUID]
+    id_usager: Optional[UUID]
     prenom: str 
     nom: str 
     adresse: str
@@ -27,7 +27,7 @@ class UsagerDTO(BaseModel):
         return self
     def __init__(self, usager: Usager):
         super().__init__(
-            idUsager=usager.id_usager,
+            id_usager=usager.id_usager,
             prenom=usager.prenom,
             nom=usager.nom,
             adresse=usager.adresse,
