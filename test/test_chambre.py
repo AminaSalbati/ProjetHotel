@@ -25,26 +25,20 @@ class test_chambre(unittest.TestCase):
         with Session(engine) as session:
             chambreDTO = ChambreDTO(
                 Chambre(
-                    id_chambre = "47CD0198-1C8C-4C77-AE92-A8F250C5E6C3",
-                    numero_chambre = 101,
-                    disponible_reservation =True,
-                    autre_informations = 'Nouvelle info',
-                    type_chambre = 
-                        TypeChambre(
-                            nom_type = 'king',
-                            prix_plancher = 229.00
-                        )
+                    id_chambre="47CD0198-1C8C-4C77-AE92-A8F250C5E6C3",
+                    numero_chambre=101,
+                    disponible_reservation=True,
+                    autre_informations="Nouvelle info",
+                    type_chambre=TypeChambre(nom_type="king", prix_plancher=229.00),
                 )
-                
-            )   
-        modifierChambre(chambreDTO) 
+            )
+        modifierChambre(chambreDTO)
 
-        stmt = select(Chambre).where(Chambre.numero_chambre == 101)    
-        chambreDB = session.execute(stmt).scalars().one()
+        with Session(engine) as session:
+            stmt = select(Chambre).where(Chambre.id_chambre == chambreDTO.idChambre)
+            chambreDB = session.execute(stmt).scalars().one()
+            self.assertEqual(chambreDB.autre_informations, "Nouvelle info")
 
-        self.assertEqual(chambreDB.autre_informations,'Nouvelle info')
-
-        chambreDB.autre_informations = "ancienne info"
-        chambreDB.disponible_reservation = False
-        session.commit()
-    
+            chambreDB.autre_informations = "ancienne info"
+            chambreDB.disponible_reservation = False
+            session.commit()
