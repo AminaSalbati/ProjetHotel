@@ -77,10 +77,13 @@ def creerReservation(reservationDTO: ReservationDTO):
 def supprimerReservation(id_reservation: int):
     with Session(engine) as session:
         reservation = session.query(Reservation).filter_by(id_reservation=id_reservation).first()
+        if not reservation:
+            raise ValueError("Réservation introuvable")
+
         
         if reservation:
-            if reservation.date_fin_reservation < date.today():
-                raise ValueError("Impossible de supprimer une réservation déjà terminée.")
+            if reservation.date_fin_reservation.date() < date.today():
+                raise ValueError("Impossible de supprimer une réservation déjà terminée")
 
             session.delete(reservation)
             session.commit()
@@ -95,7 +98,7 @@ def modifierReservation(id_reservation: int, reservationDTO: ReservationDTO):
         if not reservation:
             raise ValueError("Réservation introuvable.")
 
-        if reservation.date_fin_reservation < date.today():
+        if reservation.date_fin_reservation.date() < date.today():
 
             raise ValueError("Impossible de modifier une réservation déjà terminée.")
         
