@@ -32,12 +32,12 @@ class test_usager(unittest.TestCase):
         # recupere l ID
         resultats = rechercherUsager(nom="TestNom", prenom="TestPrenom")
         if resultats:
-            self.usager_dto.idUsager = resultats[0].idUsager
+            self.usager_dto.id_usager = resultats[0].id_usager
 
     def tearDown(self):
         
-        if self.usager_dto.idUsager:
-            supprimerUsager(self.usager_dto.idUsager)
+        if self.usager_dto.id_usager:
+            supprimerUsager(self.usager_dto.id_usager)
 
     def test_utilisateur(self):
         with Session(engine) as session:
@@ -62,14 +62,14 @@ class test_usager(unittest.TestCase):
         modifierUsager(self.usager_dto)
 
         
-        updated = rechercherUsager(id_usager=self.usager_dto.idUsager)[0]
+        updated = rechercherUsager(id_usager=self.usager_dto.id_usager)[0]
         self.assertEqual(updated.mobile.strip(), "9999999999")
 
     def test_supprimerUsager(self):
-        supprimerUsager(self.usager_dto.idUsager)
+        supprimerUsager(self.usager_dto.id_usager)
 
         
-        results = rechercherUsager(id_usager=self.usager_dto.idUsager)
+        results = rechercherUsager(id_usager=self.usager_dto.id_usager)
         self.assertEqual(len(results), 0)
 
 
@@ -84,4 +84,4 @@ class test_usager(unittest.TestCase):
 
 
 
-       #version eronnée# import unittest from sqlalchemy.orm import Session from sqlalchemy import create_engine, select from modele.usager import Usager from modele.reservation import Reservation import unittest from uuid import UUID from metier.usagerMetier import creerUsager, rechercherUsager, modifierUsager, supprimerUsager from DTO.usagerDTO import UsagerDTO from modele.usager import Usager from sqlalchemy.orm import Session from sqlalchemy import create_engine, select engine = create_engine('mssql+pyodbc://localhost\\SQLEXPRESS/Hotel?driver=ODBC+Driver+17+for+SQL+Server', use_setinputsizes=False) User_Prenom = "Houssam" class test_usager(unittest.TestCase): def test_utilisateur(self): with Session(engine) as session: stmt = select(Usager).where(Usager.prenom == User_Prenom) usager = session.execute(stmt).scalars().first() self.assertIsNotNone(usager, f"Usager avec le prénom '{User_Prenom}' introuvable") nb_res = len(usager.reservations) self.assertGreaterEqual( nb_res, 2, f"L'usager {User_Prenom} devrait avoir au moins 2 réservation, trouvé: {nb_res}" ) #test rechercher usager def test_rechercherUsager(self): resultats = rechercherUsager(nom="TestNom", prenom="TestPrenom") self.assertGreaterEqual(len(resultats), 1) self.assertEqual(resultats[0].adresse, "123 rue Test") #modifier usager res chambre def test_modifierUsager(self): # Modification du mobile self.usager_test.mobile = "9999999999" modifierUsager(self.usager_test) # Vérification updated = rechercherUsager(id_usager=self.usager_test.idUsager)[0] self.assertEqual(updated.mobile, "9999999999") def test_supprimerUsager(self): supprimerUsager(self.usager_test.idUsager) # Vérifier qu’il n’est plus dans la DB results = rechercherUsager(id_usager=self.usager_test.idUsager) self.assertEqual(len(results), 0)
+       
