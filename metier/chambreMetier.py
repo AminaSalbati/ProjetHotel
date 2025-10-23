@@ -129,12 +129,8 @@ def modifierTypeChambre(typeChambre: TypeChambreDTO) -> TypeChambreDTO:
         session.commit()
         session.refresh(existing)
  
-        return TypeChambreDTO(
-            nom_type=existing.nom_type,
-            description_chambre=existing.description_chambre,
-            prix_plancher=existing.prix_plancher,
-            prix_plafond=existing.prix_plafond
-        )
+        return TypeChambreDTO(existing)
+
     
 
 
@@ -147,11 +143,7 @@ def rechercherTypeChambreParNom(nom_type: str) -> TypeChambreDTO | None:
         if not result:
             return None
 
-        return TypeChambreDTO(
-            nom_type=result.nom_type,
-            description_chambre=result.description_chambre,
-            prix_plancher=result.prix_plancher,
-            prix_plafond=result.prix_plafond
-        )
+        return TypeChambreDTO(result)
+
 
 
