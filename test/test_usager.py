@@ -32,12 +32,12 @@ class test_usager(unittest.TestCase):
         # recupere l ID
         resultats = rechercherUsager(nom="TestNom", prenom="TestPrenom")
         if resultats:
-            self.usager_dto.idUsager = resultats[0].idUsager
+            self.usager_dto.id_usager = resultats[0].id_usager
 
     def tearDown(self):
         
-        if self.usager_dto.idUsager:
-            supprimerUsager(self.usager_dto.idUsager)
+        if self.usager_dto.id_usager:
+            supprimerUsager(self.usager_dto.id_usager)
 
     def test_utilisateur(self):
         with Session(engine) as session:
@@ -62,14 +62,14 @@ class test_usager(unittest.TestCase):
         modifierUsager(self.usager_dto)
 
         
-        updated = rechercherUsager(id_usager=self.usager_dto.idUsager)[0]
+        updated = rechercherUsager(id_usager=self.usager_dto.id_usager)[0]
         self.assertEqual(updated.mobile.strip(), "9999999999")
 
     def test_supprimerUsager(self):
-        supprimerUsager(self.usager_dto.idUsager)
+        supprimerUsager(self.usager_dto.id_usager)
 
         
-        results = rechercherUsager(id_usager=self.usager_dto.idUsager)
+        results = rechercherUsager(id_usager=self.usager_dto.id_usager)
         self.assertEqual(len(results), 0)
 
 
@@ -84,3 +84,4 @@ class test_usager(unittest.TestCase):
 
 
 
+       
