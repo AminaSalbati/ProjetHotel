@@ -20,8 +20,8 @@ def rechercherReservation(criteres: CriteresRechercheDTO):
         if(criteres.idChambre):
             stmt = stmt.where(Reservation.fk_id_chambre == criteres.idChambre)
 
-        if(criteres.idUsager):
-            stmt = stmt.where(Reservation.fk_id_usager == criteres.idUsager)
+        if(criteres.id_usager):
+            stmt = stmt.where(Reservation.fk_id_usager == criteres.id_usager)
 
         if(criteres.nom):
             stmt = stmt.join(Usager).where(Usager.nom == criteres.nom)

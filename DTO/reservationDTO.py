@@ -9,7 +9,7 @@ from modele.reservation import Reservation
 
 class CriteresRechercheDTO(BaseModel):
     idReservation: Optional[str] = Field(default=None, min_length=36, max_length=36)
-    idUsager: Optional[str] = Field(default=None, min_length=36, max_length=36)
+    id_usager: Optional[str] = Field(default=None, min_length=36, max_length=36)
     idChambre: Optional[str] = Field(default=None, min_length=36, max_length=36)
     nom: Optional[str] = Field(default=None, max_length=60)
     prenom: Optional[str] = Field(default=None, max_length=60)

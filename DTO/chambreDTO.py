@@ -5,7 +5,6 @@ from uuid import UUID
  
 # Data Transfer Object : pydantic BaseModel pour intégration facile avec FastAPI
 class TypeChambreDTO(BaseModel):
-   
     nom_type: str
     prix_plafond: Optional[float] = None
     prix_plancher: float
@@ -13,7 +12,6 @@ class TypeChambreDTO(BaseModel):
  
     def __init__(self, typeChambre: TypeChambre):
         super().__init__(
-                         
                          nom_type = typeChambre.nom_type,
                          prix_plafond = typeChambre.prix_plafond,
                          prix_plancher = typeChambre.prix_plancher,
