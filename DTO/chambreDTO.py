@@ -10,14 +10,17 @@ class TypeChambreDTO(BaseModel):
     prix_plancher: float
     description_chambre : Optional[str] = None
  
-    def __init__(self, typeChambre: TypeChambre):
-        super().__init__(
-                         nom_type = typeChambre.nom_type,
-                         prix_plafond = typeChambre.prix_plafond,
-                         prix_plancher = typeChambre.prix_plancher,
-                         description_chambre = typeChambre.description_chambre
-                         )
- 
+    def __init__(self, typeChambre: TypeChambre = None, **kwargs):
+        if typeChambre is not None:
+            super().__init__(
+                            nom_type = typeChambre.nom_type,
+                            prix_plafond = typeChambre.prix_plafond,
+                            prix_plancher = typeChambre.prix_plancher,
+                            description_chambre = typeChambre.description_chambre
+                            )
+        else:
+            super().__init__(**kwargs) 
+
 class ChambreDTO(BaseModel):
     idChambre : Optional[UUID]
     numero_chambre: int
